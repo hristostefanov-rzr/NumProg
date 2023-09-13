@@ -1,8 +1,12 @@
 import numpy as np
 
 
+# TODO: Check if having zeros in the diagonal leads to undefined behavior
 def backward_substitution(A, b):
     # Copy the matrix so that the original is not modified
+    singular = np.any(np.all(A == 0, axis=1))
+    if singular:
+        raise Exception("Matrix is singular")
     A_copy = A.copy()
     b_copy = b.copy()
     n = A.shape[0]
