@@ -1,11 +1,29 @@
 import numpy as np
 
 
+def merge_polynoms(polynoms, merge_coeffs):
+    assert len(polynoms) == len(
+        merge_coeffs
+    ), "The number of polynoms and coefficients must be the same"
+    polynom_coeff = [polynoms[i].coeff for i in range(len(polynoms))]
+    max_degree = max([len(coeff) for coeff in polynom_coeff])
+    for i in range(len(polynom_coeff)):
+        polynom_coeff[i] = np.pad(
+            polynom_coeff[i], (0, max_degree - len(polynom_coeff[i]))
+        )
+    polynom_coeff = np.array(polynom_coeff)
+    merge_coeffs = np.array(merge_coeffs)
+    result = np.sum(polynom_coeff * merge_coeffs[:, None], axis=0)
+    return Polynom(result)
+
+
 class Polynom:
     def __init__(self, coeff):
         self.coeff = np.array(coeff)
 
     def evaluate(self, x):
+        if isinstance(x, np.ndarray):
+            x = x[:, None]
         xs = np.power(x, np.arange(len(self.coeff)))
         return xs @ self.coeff
 
@@ -23,6 +41,7 @@ class Polynom:
 
             term = f"{abs(coef)}"
             if i == 0:
+                term = f"-{term}"
                 terms.append(term)
                 first_written = True
                 continue
