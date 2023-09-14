@@ -1,6 +1,14 @@
 import numpy as np
 
 
+def create_base_polynom(degree):
+    degree = degree
+    coeffs = [0] * (degree + 1)
+    coeffs[-1] = 1
+    base_polynom = Polynom(coeffs)
+    return base_polynom
+
+
 def merge_polynoms(polynoms, merge_coeffs):
     assert len(polynoms) == len(
         merge_coeffs
@@ -69,3 +77,51 @@ class Polynom:
         self,
     ):
         return "Polynomial: " + self.__str__()
+
+
+# This class represents a factorised polynomial total_coeff * (x-a)(x-b)(x-c)...
+class FactorisedPolynom:
+    def __init__(self, roots, total_coeff=1.0):
+        self.roots = np.array(roots)
+        self.total_coeff = total_coeff
+
+    def evaluate(self, x):
+        return self.total_coeff * np.prod(x - self.roots)
+
+    def __call__(self, x):
+        return self.evaluate(x)
+
+    def to_named_string(self, function_name="f(x)"):
+        factored_terms = []
+        for i in range(len(self.roots)):
+            if self.roots[i] == 0:
+                factored_terms.append("x")
+            elif self.roots[i] > 0:
+                factored_terms.append("(x - " + str(self.roots[i]) + ")")
+            else:
+                factored_terms.append("(x + " + str(-self.roots[i]) + ")")
+        return (
+            f"{function_name} = "
+            + str(self.total_coeff)
+            + " * "
+            + " * ".join(factored_terms)
+        )
+
+    def __str__(self):
+        return self.to_named_string("f(x)")
+
+    def __repr__(
+        self,
+    ):
+        return "Factorised polynomial: " + self.__str__()
+
+    def to_standard_polynom(self):
+        coefficients = np.array([self.total_coeff])
+        for i in range(len(self.roots)):
+            coefficients = self.multiply_by_factor(coefficients, self.roots[i])
+        return Polynom(coefficients)
+
+    def multiply_by_factor(self, coeff, root):
+        new_coeff = np.append(coeff, 0) * -root
+        new_coeff[1:] += coeff
+        return new_coeff
