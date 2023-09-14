@@ -1,6 +1,8 @@
 import numpy as np
 from misc.polynomial import Polynomial
+from lineq.lu_decomposition import lu_solve
 
+# Four basis polynomials used for the spline interpolation
 H0 = Polynomial([1, 0, -3, 2])
 H1 = Polynomial([0, 0, 3, -2])
 H2 = Polynomial([0, 1, -2, 1])
@@ -27,7 +29,7 @@ def find_derivatives(xs, ys, edge_derivatives=None):
     known_derivatives[0] = edge_derivatives[0]
     known_derivatives[-1] = edge_derivatives[-1]
     rhs = rhs - known_derivatives
-    inner_derivatives = np.linalg.solve(tri_matrix, rhs)
+    inner_derivatives = lu_solve(tri_matrix, rhs)
     inner_derivatives = np.pad(
         inner_derivatives, (1, 1), mode="constant", constant_values=0
     )
@@ -107,7 +109,7 @@ def create_hermite_function(xs, ys, derivatives):
 # xs contains the x values of the sampled points
 # ys contains the y values of the sampled points
 # edge_derivatives is a list of the derivatives at the edges
-# if no edge_derivatives are given, the function assumes that the second derivative is 0 at the edges
+# If no edge_derivatives are given, the function assumes that the second derivative is 0 at the edges
 # returns a function that can be evaluated at any point in the interval [xs[0], xs[-1]]
 def interpolate_with_splines(xs, ys, edge_derivatives=None):
     derivatives = find_derivatives(xs, ys, edge_derivatives)

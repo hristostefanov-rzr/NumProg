@@ -3,6 +3,8 @@ import numpy as np
 from misc import FactorisedPolynomial, merge_polynomials
 
 
+# Takes as input the x coordiantes of the points to be interpolated
+# Computes a basis of lagraange polynomials to use for interpolation
 def compute_lagrange_polynomials(xs):
     lagrange_polynomials = []
     for i in range(len(xs)):
@@ -12,12 +14,16 @@ def compute_lagrange_polynomials(xs):
     return lagrange_polynomials
 
 
+# Given points calculates a basis of lagrange polynomials
+# and then it does a weighted sum of the basis polynomials
+# to get the interpolating polynomial
 class LagrangePolynomials:
     def __init__(self, xs, ys):
         self.lagrange_polynomials = compute_lagrange_polynomials(xs)
         self.ys = ys
         self.standard_polynomial = self.calculate_standard_polynomial()
 
+    # Uses the basis polynomials to construct the interpolating polynomial
     def calculate_standard_polynomial(self):
         polynomials = [
             self.lagrange_polynomials[i].to_standard_polynomial()

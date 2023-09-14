@@ -2,6 +2,12 @@ import numpy as np
 
 
 # TODO: Check if having zeros in the diagonal leads to undefined behavior
+
+# Implementation of the Gauss Elimination algorithm
+
+
+# Takes as input a upper triangular matrix and a vector
+# and returns the solution of the system
 def backward_substitution(A, b):
     # Copy the matrix so that the original is not modified
     singular = np.any(np.all(A == 0, axis=1))
@@ -17,7 +23,10 @@ def backward_substitution(A, b):
         A_copy[:, var] = np.zeros(n)
     return x
 
-
+# Takes as input a matrix and a vector
+# and using elementary row operations
+# transforms the matrix into an upper triangular matrix
+# while keeping the solution of the system unchanged
 def forward_substitution(A, b):
     n = A.shape[0]
     A_copy = A.copy()
@@ -38,7 +47,9 @@ def forward_substitution(A, b):
         ).T - b_copy[var]
     return A_copy, b_copy
 
-
+# Using the Gauss Elimination algorithm
+# this function solves the system Ax = b
+# and returns the solution x
 def gauss_elimination(A, b):
     assert A.shape[0] == A.shape[1], "Matrix A must be square"
     assert A.shape[0] == b.shape[0], "Matrix A and b must have the same number of rows"

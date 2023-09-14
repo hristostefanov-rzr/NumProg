@@ -1,6 +1,6 @@
 import numpy as np
 
-
+# Creates a base polynomial x^degree
 def create_base_polynomial(degree):
     degree = degree
     coeffs = [0] * (degree + 1)
@@ -8,7 +8,7 @@ def create_base_polynomial(degree):
     base_polynomial = Polynomial(coeffs)
     return base_polynomial
 
-
+# Merge multiple polynomials into one with the given coefficients
 def merge_polynomials(polynomials, merge_coeffs):
     assert len(polynomials) == len(
         merge_coeffs
@@ -24,7 +24,8 @@ def merge_polynomials(polynomials, merge_coeffs):
     result = np.sum(polynomial_coeff * merge_coeffs[:, None], axis=0)
     return Polynomial(result)
 
-
+# A class that represents a polynomial with its coefficients
+# with the lowest degree first
 class Polynomial:
     def __init__(self, coeff):
         self.coeff = np.array(coeff)
@@ -81,6 +82,7 @@ class Polynomial:
 
 
 # This class represents a factorised polynomial total_coeff * (x-a)(x-b)(x-c)...
+# as an array of roots [a, b, c,...]cand a total coefficient
 class FactorisedPolynomial:
     def __init__(self, roots, total_coeff=1.0):
         self.roots = np.array(roots)
@@ -115,14 +117,15 @@ class FactorisedPolynomial:
         self,
     ):
         return "Factorised polynomial: " + self.__str__()
-
+    # Converts the factorised polynomial to a polynomial represented by its coefficients
     def to_standard_polynomial(self):
         coefficients = np.array([self.total_coeff])
         for i in range(len(self.roots)):
-            coefficients = self.multiply_by_factor(coefficients, self.roots[i])
+            coefficients = self._multiply_by_factor(coefficients, self.roots[i])
         return Polynomial(coefficients)
-
-    def multiply_by_factor(self, coeff, root):
+    # Helper function for to_standard_polynomial
+    # which basically multiplies a polynomial by (x-root)
+    def _multiply_by_factor(self, coeff, root):
         new_coeff = np.append(coeff, 0) * -root
         new_coeff[1:] += coeff
         return new_coeff
