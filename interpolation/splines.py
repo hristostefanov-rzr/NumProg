@@ -1,10 +1,10 @@
 import numpy as np
-from misc.polynom import Polynom
+from misc.polynomial import Polynomial
 
-H0 = Polynom([1, 0, -3, 2])
-H1 = Polynom([0, 0, 3, -2])
-H2 = Polynom([0, 1, -2, 1])
-H3 = Polynom([0, 0, -1, 1])
+H0 = Polynomial([1, 0, -3, 2])
+H1 = Polynomial([0, 0, 3, -2])
+H2 = Polynomial([0, 1, -2, 1])
+H3 = Polynomial([0, 0, -1, 1])
 
 
 # Creates the tri matrix used to calculate the derivatives needed for the spline interpolation

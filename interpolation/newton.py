@@ -1,5 +1,5 @@
 import numpy as np
-from misc import FactorisedPolynom, merge_polynoms
+from misc import FactorisedPolynomial, merge_polynomials
 
 
 class NewtonTable:
@@ -14,7 +14,7 @@ class NewtonTable:
                     self.xs[i + k] - self.xs[i]
                 )
 
-        self.polynom = self.calculate_polynom()
+        self.polynomial = self.calculate_polynomial()
 
     def add_points_after(self, new_xs, new_ys):
         # new_xs must be sorted
@@ -24,14 +24,13 @@ class NewtonTable:
         new_cs = np.zeros((n, n))
         new_cs[: len(cs), : len(cs)] = cs
         new_cs[len(cs) :, 0] = new_ys
-        start = len(cs)
         for k in range(1, n):
             for i in range(max(len(cs) - k, 0), len(cs) + len(new_xs) - k):
                 new_cs[i][k] = (new_cs[i + 1][k - 1] - new_cs[i][k - 1]) / (
                     self.xs[i + k] - self.xs[i]
                 )
         self.cs = new_cs
-        self.polynom = self.calculate_polynom()
+        self.polynomial = self.calculate_polynomial()
 
     def add_points_before(self, new_xs, new_ys):
         # xs must be sorted
@@ -55,17 +54,17 @@ class NewtonTable:
                 )
         self.cs = new_cs
         self.xs = xs
-        self.polynom = self.calculate_polynom()
+        self.polynomial = self.calculate_polynomial()
 
-    def calculate_polynom(self):
+    def calculate_polynomial(self):
         polynomials = []
         for i in range(len(self.xs) - 1):
             total_coeff = self.cs[0][i + 1]
-            p = FactorisedPolynom(self.xs[: i + 1], total_coeff)
-            polynomials.append(p.to_standard_polynom())
-        final_polynom = merge_polynoms(polynomials, np.ones(len(polynomials)))
+            p = FactorisedPolynomial(self.xs[: i + 1], total_coeff)
+            polynomials.append(p.to_standard_polynomial())
+        final_polynom = merge_polynomials(polynomials, np.ones(len(polynomials)))
         final_polynom.coeff[0] += self.cs[0][0]
         return final_polynom
 
     def __call__(self, x):
-        return self.polynom(x)
+        return self.polynomial(x)

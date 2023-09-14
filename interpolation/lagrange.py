@@ -1,40 +1,41 @@
 import numpy as np
 
-from misc import FactorisedPolynom, merge_polynoms
+from misc import FactorisedPolynomial, merge_polynomials
 
 
-class LagrangePolynoms:
+def compute_lagrange_polynomials(xs):
+    lagrange_polynomials = []
+    for i in range(len(xs)):
+        xs_without_i = xs[i != np.arange(len(xs))]
+        coeff = 1 / (np.prod(xs[i] - xs_without_i))
+        lagrange_polynomials.append(FactorisedPolynomial(xs_without_i, coeff))
+    return lagrange_polynomials
+
+
+class LagrangePolynomials:
     def __init__(self, xs, ys):
-        self.lagrange_polynoms = self.compute_lagrange_polynoms(xs)
+        self.lagrange_polynomials = compute_lagrange_polynomials(xs)
         self.ys = ys
-        self.standard_polynom = self.calculate_standard_polynom()
+        self.standard_polynomial = self.calculate_standard_polynomial()
 
-    def compute_lagrange_polynoms(self, xs):
-        lagrange_polynoms = []
-        for i in range(len(xs)):
-            xs_without_i = xs[i != np.arange(len(xs))]
-            coeff = 1 / (np.prod(xs[i] - xs_without_i))
-            lagrange_polynoms.append(FactorisedPolynom(xs_without_i, coeff))
-        return lagrange_polynoms
-
-    def calculate_standard_polynom(self):
-        polynoms = [
-            self.lagrange_polynoms[i].to_standard_polynom()
-            for i in range(len(self.lagrange_polynoms))
+    def calculate_standard_polynomial(self):
+        polynomials = [
+            self.lagrange_polynomials[i].to_standard_polynomial()
+            for i in range(len(self.lagrange_polynomials))
         ]
-        return merge_polynoms(polynoms, self.ys)
+        return merge_polynomials(polynomials, self.ys)
 
-    def to_standard_polynom(self):
-        return self.standard_polynom
+    def to_standard_polynomial(self):
+        return self.standard_polynomial
 
     def __call__(self, x):
-        return self.standard_polynom(x)
+        return self.standard_polynomial(x)
 
     def __str__(self):
         functs = "\n".join(
             [
                 p.to_named_string(function_name=f"L{i}(x)")
-                for i, p in enumerate(self.lagrange_polynoms)
+                for i, p in enumerate(self.lagrange_polynomials)
             ]
         )
         return (

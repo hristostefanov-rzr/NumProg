@@ -1,31 +1,31 @@
 import numpy as np
 
 
-def create_base_polynom(degree):
+def create_base_polynomial(degree):
     degree = degree
     coeffs = [0] * (degree + 1)
     coeffs[-1] = 1
-    base_polynom = Polynom(coeffs)
-    return base_polynom
+    base_polynomial = Polynomial(coeffs)
+    return base_polynomial
 
 
-def merge_polynoms(polynoms, merge_coeffs):
-    assert len(polynoms) == len(
+def merge_polynomials(polynomials, merge_coeffs):
+    assert len(polynomials) == len(
         merge_coeffs
-    ), "The number of polynoms and coefficients must be the same"
-    polynom_coeff = [polynoms[i].coeff for i in range(len(polynoms))]
-    max_degree = max([len(coeff) for coeff in polynom_coeff])
-    for i in range(len(polynom_coeff)):
-        polynom_coeff[i] = np.pad(
-            polynom_coeff[i], (0, max_degree - len(polynom_coeff[i]))
+    ), "The number of polynomials and coefficients must be the same"
+    polynomial_coeff = [polynomials[i].coeff for i in range(len(polynomials))]
+    max_degree = max([len(coeff) for coeff in polynomial_coeff])
+    for i in range(len(polynomial_coeff)):
+        polynomial_coeff[i] = np.pad(
+            polynomial_coeff[i], (0, max_degree - len(polynomial_coeff[i]))
         )
-    polynom_coeff = np.array(polynom_coeff)
+    polynomial_coeff = np.array(polynomial_coeff)
     merge_coeffs = np.array(merge_coeffs)
-    result = np.sum(polynom_coeff * merge_coeffs[:, None], axis=0)
-    return Polynom(result)
+    result = np.sum(polynomial_coeff * merge_coeffs[:, None], axis=0)
+    return Polynomial(result)
 
 
-class Polynom:
+class Polynomial:
     def __init__(self, coeff):
         self.coeff = np.array(coeff)
 
@@ -81,7 +81,7 @@ class Polynom:
 
 
 # This class represents a factorised polynomial total_coeff * (x-a)(x-b)(x-c)...
-class FactorisedPolynom:
+class FactorisedPolynomial:
     def __init__(self, roots, total_coeff=1.0):
         self.roots = np.array(roots)
         self.total_coeff = total_coeff
@@ -116,11 +116,11 @@ class FactorisedPolynom:
     ):
         return "Factorised polynomial: " + self.__str__()
 
-    def to_standard_polynom(self):
+    def to_standard_polynomial(self):
         coefficients = np.array([self.total_coeff])
         for i in range(len(self.roots)):
             coefficients = self.multiply_by_factor(coefficients, self.roots[i])
-        return Polynom(coefficients)
+        return Polynomial(coefficients)
 
     def multiply_by_factor(self, coeff, root):
         new_coeff = np.append(coeff, 0) * -root

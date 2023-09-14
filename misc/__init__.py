@@ -1,1 +1,1 @@
-from .polynom import *
+from .polynomial import *
