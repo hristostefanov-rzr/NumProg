@@ -3,6 +3,7 @@ from lineq.gauss import backward_substitution
 
 # TODO: Add permutation matrix when the matrix has zeros in the diagonal
 
+
 # Implementation of the LU Decomposition algorithm
 # Takes as input a matrix and returns a lower and upper triangular matrices
 # such that A = LU
@@ -21,6 +22,7 @@ def lu_decomposition(A):
         L[i + 1 :, i] = L[i + 1 :, i] / U[i][i]
     return L, U
 
+
 # Takes as input a lower triangular matrix and a vector
 # and returns the solution of the system
 def l_backward_substitution(L_input, b_input):
@@ -37,6 +39,7 @@ def l_backward_substitution(L_input, b_input):
         b = (b.T - (L[:, var] * x[var]).T).T
         L[:, var] = np.zeros(n)
     return x
+
 
 # Using the LU Decomposition algorithm
 # this function solves the system Ax = b

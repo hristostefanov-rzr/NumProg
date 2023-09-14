@@ -23,6 +23,7 @@ def backward_substitution(A, b):
         A_copy[:, var] = np.zeros(n)
     return x
 
+
 # Takes as input a matrix and a vector
 # and using elementary row operations
 # transforms the matrix into an upper triangular matrix
@@ -46,6 +47,7 @@ def forward_substitution(A, b):
             b_copy[var + 1 :][non_zero_indices].T * coeff
         ).T - b_copy[var]
     return A_copy, b_copy
+
 
 # Using the Gauss Elimination algorithm
 # this function solves the system Ax = b

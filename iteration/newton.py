@@ -12,6 +12,7 @@ def newton_method(p, x0, k=1, eps=1e-5, max_iter=100):
             return x
     return x
 
+
 # Takes as an input a polynomial and returns its derivative polynomial
 def get_derivative(p):
     return Polynomial([p[i] * i for i in range(1, len(p))])

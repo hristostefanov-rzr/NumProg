@@ -1,5 +1,6 @@
 import numpy as np
 
+
 # Creates a base polynomial x^degree
 def create_base_polynomial(degree):
     degree = degree
@@ -7,6 +8,7 @@ def create_base_polynomial(degree):
     coeffs[-1] = 1
     base_polynomial = Polynomial(coeffs)
     return base_polynomial
+
 
 # Merge multiple polynomials into one with the given coefficients
 def merge_polynomials(polynomials, merge_coeffs):
@@ -23,6 +25,7 @@ def merge_polynomials(polynomials, merge_coeffs):
     merge_coeffs = np.array(merge_coeffs)
     result = np.sum(polynomial_coeff * merge_coeffs[:, None], axis=0)
     return Polynomial(result)
+
 
 # A class that represents a polynomial with its coefficients
 # with the lowest degree first
@@ -117,12 +120,14 @@ class FactorisedPolynomial:
         self,
     ):
         return "Factorised polynomial: " + self.__str__()
+
     # Converts the factorised polynomial to a polynomial represented by its coefficients
     def to_standard_polynomial(self):
         coefficients = np.array([self.total_coeff])
         for i in range(len(self.roots)):
             coefficients = self._multiply_by_factor(coefficients, self.roots[i])
         return Polynomial(coefficients)
+
     # Helper function for to_standard_polynomial
     # which basically multiplies a polynomial by (x-root)
     def _multiply_by_factor(self, coeff, root):

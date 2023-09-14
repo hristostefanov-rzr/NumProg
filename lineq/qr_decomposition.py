@@ -1,11 +1,13 @@
 import numpy as np
 from lineq.gauss import backward_substitution
 
+
 # Create the ith standard basis vector of size n
 def e_n(i, n):
     e = np.zeros(n)
     e[i] = 1
     return e
+
 
 # Takes as input a matrix and returns an orthogonal matrix Q
 # and an upper triangular matrix R such that A = QR
@@ -27,6 +29,7 @@ def qr_decomposition(A):
         Q = Q @ H_outer
     return Q, R
 
+
 # Using the QR Decomposition algorithm
 # this function solves the system Ax = b
 # and returns the solution x
@@ -34,6 +37,7 @@ def qr_solve(A, b):
     Q, R = qr_decomposition(A)
     b_prim = Q.T @ b
     return backward_substitution(R, b_prim)
+
 
 # Using the QR Decomposition algorithm
 # this function solves the linear least squares problem Ax = b
