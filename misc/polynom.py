@@ -49,7 +49,8 @@ class Polynom:
 
             term = f"{abs(coef)}"
             if i == 0:
-                term = f"-{term}"
+                if coef < 0:
+                    term = f"-{term}"
                 terms.append(term)
                 first_written = True
                 continue
