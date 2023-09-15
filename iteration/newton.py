@@ -22,6 +22,7 @@ def newton_method(f, f_prim, x0, k=1, eps=1e-5, max_iter=100):
 def get_derivative_polynomial(p):
     return Polynomial([p[i] * i for i in range(1, len(p))])
 
+
 # Secant method for finding roots of a function without knowing the derivative
 def secant_method(f, x0, x1, eps=1e-5, max_iter=100):
     x = x1
