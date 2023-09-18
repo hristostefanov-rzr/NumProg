@@ -1,8 +1,5 @@
 import numpy as np
 
-
-# TODO: Check if having zeros in the diagonal leads to undefined behavior
-
 # Implementation of the Gauss Elimination algorithm
 
 

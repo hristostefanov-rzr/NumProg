@@ -84,6 +84,14 @@ class Polynomial:
         return "Polynomial: " + self.__str__()
 
 
+# Helper function for to_standard_polynomial
+# which basically multiplies a polynomial by (x-root)
+def _multiply_by_factor(coeff, root):
+    new_coeff = np.append(coeff, 0) * -root
+    new_coeff[1:] += coeff
+    return new_coeff
+
+
 # This class represents a factorised polynomial total_coeff * (x-a)(x-b)(x-c)...
 # as an array of roots [a, b, c,...]cand a total coefficient
 class FactorisedPolynomial:
@@ -125,12 +133,5 @@ class FactorisedPolynomial:
     def to_standard_polynomial(self):
         coefficients = np.array([self.total_coeff])
         for i in range(len(self.roots)):
-            coefficients = self._multiply_by_factor(coefficients, self.roots[i])
+            coefficients = _multiply_by_factor(coefficients, self.roots[i])
         return Polynomial(coefficients)
-
-    # Helper function for to_standard_polynomial
-    # which basically multiplies a polynomial by (x-root)
-    def _multiply_by_factor(self, coeff, root):
-        new_coeff = np.append(coeff, 0) * -root
-        new_coeff[1:] += coeff
-        return new_coeff

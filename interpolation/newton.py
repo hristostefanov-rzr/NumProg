@@ -43,7 +43,7 @@ class NewtonTable:
         # Updates the interpolating polynomial
         self.polynomial = self.calculate_polynomial()
 
-    # Adds new points to the table (to the left on the x axis)
+    # Adds new points to the table (to the left on the x-axis)
     # and updates the interpolating polynomial
     def add_points_before(self, new_xs, new_ys):
         # xs must be sorted
